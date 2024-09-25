@@ -2,7 +2,7 @@ import { forwardRef, memo } from "react";
 import { Warning } from "@phosphor-icons/react";
 import renderMarkdown from "@/utils/chat/markdown";
 import { embedderSettings } from "@/main";
-import AnythingLLMIcon from "@/assets/anything-llm-icon.svg";
+import AnythingLLMIcon from "@/assets/anything-llm-icon.png";
 import { formatDate } from "@/utils/date";
 
 const PromptReply = forwardRef(

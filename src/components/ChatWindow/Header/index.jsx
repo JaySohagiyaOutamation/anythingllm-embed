@@ -1,4 +1,4 @@
-import AnythingLLMIcon from "@/assets/anything-llm-icon.svg";
+import AnythingLLMIcon from "@/assets/anything-llm-icon.png";
 import ChatService from "@/models/chatService";
 import {
   ArrowCounterClockwise,
