@@ -33,7 +33,7 @@ const HistoricalMessage = forwardRef(
             className={`allm-text-[10px] allm-text-gray-400 allm-ml-[54px] allm-mr-6 allm-mb-2 allm-text-left allm-font-sans`}
           >
             {embedderSettings.settings.assistantName ||
-              "Outamation LLM Chat Assistant"}
+              "OutamationAI Chat Assistant"}
           </div>
         )}
         <div
