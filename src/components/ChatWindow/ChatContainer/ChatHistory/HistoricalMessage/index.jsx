@@ -24,7 +24,7 @@ const HistoricalMessage = forwardRef(
     const textSize = !!embedderSettings.settings.textSize
       ? `allm-text-[${embedderSettings.settings.textSize}px]`
       : "allm-text-sm";
-    if (error) console.error(`ANYTHING_LLM_CHAT_WIDGET_ERROR: ${error}`);
+    if (error) console.error(`OUTAMATION_AI_CHAT_WIDGET_ERROR: ${error}`);
 
     return (
       <div className="py-[5px]">
