@@ -18,8 +18,8 @@ const DEFAULT_SETTINGS = {
   userBgColor: "#2C2F35", // user text bubble color
   assistantBgColor: "#2563eb", // assistant text bubble color
   noSponsor: null, // Shows sponsor in footer of chat
-  sponsorText: "Powered by OutamationAI", // default sponsor text
-  sponsorLink: "https://anythingllm.com", // default sponsor link
+  sponsorText: "Powered by Outamation AI", // default sponsor text
+  sponsorLink: "https://outamation.com/", // default sponsor link
   position: "bottom-right", // position of chat button/window
   assistantName: "OutamationAI Chat Assistant", // default assistant name
   assistantIcon: null, // default assistant icon

@@ -33,7 +33,7 @@ const HistoricalMessage = forwardRef(
             className={`allm-text-[10px] allm-text-gray-400 allm-ml-[54px] allm-mr-6 allm-mb-2 allm-text-left allm-font-sans`}
           >
             {embedderSettings.settings.assistantName ||
-              "OutamationAI Chat Assistant"}
+              "Outamation AI Chat Assistant"}
           </div>
         )}
         <div
@@ -46,7 +46,7 @@ const HistoricalMessage = forwardRef(
           {role === "assistant" && (
             <img
               src={embedderSettings.settings.assistantIcon || AnythingLLMIcon}
-              alt="Anything LLM Icon"
+              alt="Outamation AI Icon"
               className="allm-w-9 allm-h-9 allm-flex-shrink-0 allm-ml-2 allm-mt-2"
               id="anything-llm-icon"
             />

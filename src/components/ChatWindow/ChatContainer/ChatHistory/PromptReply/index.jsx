@@ -17,7 +17,7 @@ const PromptReply = forwardRef(
         >
           <img
             src={embedderSettings.settings.assistantIcon || AnythingLLMIcon}
-            alt="Anything LLM Icon"
+            alt="Outamation AI Icon"
             className="allm-w-9 allm-h-9 allm-flex-shrink-0 allm-ml-2"
           />
           <div
@@ -42,7 +42,7 @@ const PromptReply = forwardRef(
         >
           <img
             src={embedderSettings.settings.assistantIcon || AnythingLLMIcon}
-            alt="Anything LLM Icon"
+            alt="Outamation AI Icon"
             className="allm-w-9 allm-h-9 allm-flex-shrink-0 allm-ml-2"
           />
           <div
@@ -69,7 +69,7 @@ const PromptReply = forwardRef(
           className={`allm-text-[10px] allm-text-gray-400 allm-ml-[54px] allm-mr-6 allm-mb-2 allm-text-left allm-font-sans`}
         >
           {embedderSettings.settings.assistantName ||
-            "Anything LLM Chat Assistant"}
+            "Outamation AI Chat Assistant"}
         </div>
         <div
           key={uuid}
@@ -78,7 +78,7 @@ const PromptReply = forwardRef(
         >
           <img
             src={embedderSettings.settings.assistantIcon || AnythingLLMIcon}
-            alt="Anything LLM Icon"
+            alt="Outamation AI Icon"
             className="allm-w-9 allm-h-9 allm-flex-shrink-0 allm-ml-2"
           />
           <div
