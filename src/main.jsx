@@ -26,6 +26,6 @@ export const embedderSettings = {
   },
   ASSISTANT_STYLES: {
     msgBg: scriptSettings?.assistantBgColor ?? "#FFFFFF",
-    base: `allm-text-[#222628] allm-rounded-t-[18px] allm-rounded-br-[18px] allm-rounded-bl-[4px] allm-mr-[37px] allm-ml-[9px]`,
+    base: `allm-text-black allm-rounded-t-[18px] allm-rounded-br-[18px] allm-rounded-bl-[4px] allm-mr-[37px] allm-ml-[9px]`,
   },
 };
