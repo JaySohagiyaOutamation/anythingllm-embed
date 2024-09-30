@@ -11,7 +11,6 @@ export default function ChatContainer({
   knownHistory = [],
 }) {
   const [message, setMessage] = useState("");
-  const [currentURL, setCurrentURL] = useState("");
   const [loadingResponse, setLoadingResponse] = useState(false);
   const [chatHistory, setChatHistory] = useState(knownHistory);
 
@@ -20,10 +19,7 @@ export default function ChatContainer({
   useEffect(() => {
     if (knownHistory.length !== chatHistory.length)
       setChatHistory([...knownHistory]);
-   
   }, [knownHistory]);
-
- 
 
   const handleMessageChange = (event) => {
     setMessage(event.target.value);
@@ -100,12 +96,10 @@ export default function ChatContainer({
         setLoadingResponse(false);
         return false;
       }
-     
 
       await ChatService.streamChat(
         sessionId,
         settings,
-        currentURL,
         promptMessage.userMessage,
         (chatResult) =>
           handleChat(
@@ -129,13 +123,9 @@ export default function ChatContainer({
 
   useEffect(() => {
     window.addEventListener(SEND_TEXT_EVENT, handleAutofillEvent);
-    console.log("currentURL: ",currentURL);
-    setCurrentURL(window.location.href)
-    console.log("currentURL: ",currentURL);
     return () => {
       window.removeEventListener(SEND_TEXT_EVENT, handleAutofillEvent);
     };
-    
   }, []);
 
   return (
