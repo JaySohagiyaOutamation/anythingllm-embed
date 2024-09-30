@@ -21,7 +21,7 @@ const DEFAULT_SETTINGS = {
   sponsorText: "Powered by Outamation AI", // default sponsor text
   sponsorLink: "https://outamation.com/", // default sponsor link
   position: "bottom-right", // position of chat button/window
-  assistantName: "OutamationAI Chat Assistant", // default assistant name
+  assistantName: "Outamation AI Chat Assistant", // default assistant name
   assistantIcon: null, // default assistant icon
   windowHeight: null, // height of chat window in number:css-prefix
   windowWidth: null, // width of chat window in number:css-prefix
