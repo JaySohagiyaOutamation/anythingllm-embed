@@ -5,14 +5,53 @@ import handleChat from "@/utils/chat";
 import ChatService from "@/models/chatService";
 export const SEND_TEXT_EVENT = "anythingllm-embed-send-prompt";
 
+const cleanHtml = (html) => {
+  let tempDiv = document.createElement('div');
+  tempDiv.innerHTML = html;
+
+  // Remove all <style> tags
+  const styleTags = tempDiv.querySelectorAll('style');
+  styleTags.forEach(style => style.remove());
+
+  // Remove all inline styles
+  const elementsWithStyles = tempDiv.querySelectorAll('[style]');
+  elementsWithStyles.forEach(el => el.removeAttribute('style'));
+
+  // Remove specific <script> tags with the attribute `data-embed-id`
+  const scriptTagsWithEmbedId = tempDiv.querySelectorAll('script[data-embed-id]');
+  scriptTagsWithEmbedId.forEach(script => script.remove());
+
+  return tempDiv.innerHTML;
+};
+
+function extractText(html) {
+  const text = document.createElement('div');
+  text.innerHTML = html;
+
+  let result = '';
+  for (const node of text.childNodes) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      result += node.textContent.trim() + ' ';
+    }
+  }
+
+  return result.trim();
+}
+
 export default function ChatContainer({
   sessionId,
   settings,
+  pageSourceCode,
   knownHistory = [],
 }) {
+  // const textHtml = extractText(pageSourceCode);
+  // console.log('textHtml: ', textHtml);
   const [message, setMessage] = useState("");
+  const [currentURL, setCurrentURL] = useState("");
+  // const [pageCodeBlobUrl, setPageCodeBlobUrl] = useState("");
   const [loadingResponse, setLoadingResponse] = useState(false);
   const [chatHistory, setChatHistory] = useState(knownHistory);
+  
 
   // Resync history if the ref to known history changes
   // eg: cleared.
@@ -96,20 +135,32 @@ export default function ChatContainer({
         setLoadingResponse(false);
         return false;
       }
+      const cleanedHTML = cleanHtml(pageSourceCode);
+      console.log('cleanedHTML: ', cleanedHTML);
 
-      await ChatService.streamChat(
-        sessionId,
-        settings,
-        promptMessage.userMessage,
-        (chatResult) =>
-          handleChat(
-            chatResult,
-            setLoadingResponse,
-            setChatHistory,
-            remHistory,
-            _chatHistory
-          )
-      );
+      const sourceCodeBlob = new Blob([cleanedHTML], { type: 'text/plain' });
+      console.log('sourceCodeBlob: ', sourceCodeBlob);
+      const sourceCodeBlobUrl = URL.createObjectURL(sourceCodeBlob);
+      console.log('sourceCodeBlobUrl: ', sourceCodeBlobUrl);
+      setPageCodeBlobUrl(sourceCodeBlobUrl)
+    
+        await ChatService.streamChat(
+          sessionId,
+          settings,
+          currentURL,
+          pageSourceCode,
+          promptMessage.userMessage,
+          (chatResult) =>
+            handleChat(
+              chatResult,
+              setLoadingResponse,
+              setChatHistory,
+              remHistory,
+              _chatHistory
+            )
+        );
+      ;
+         
       return;
     }
 
@@ -122,7 +173,13 @@ export default function ChatContainer({
   };
 
   useEffect(() => {
+    console.log("currentURL: ",currentURL);
+  
     window.addEventListener(SEND_TEXT_EVENT, handleAutofillEvent);
+    setCurrentURL(window.location.href)
+    // setPageSourceCode(document.documentElement.outerHTML,() => {
+      // console.log("pageSourceCode: ",pageSourceCode)
+    // })
     return () => {
       window.removeEventListener(SEND_TEXT_EVENT, handleAutofillEvent);
     };
