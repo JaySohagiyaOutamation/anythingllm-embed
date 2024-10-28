@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 export default function App() {
   const { isChatOpen, toggleOpenChat } = useOpenChat();
-  const [pageSourceCode, setPageSourceCode] = useState("");
+  // const [pageSourceCode, setPageSourceCode] = useState("");
   const embedSettings = useGetScriptAttributes();
   const sessionId = useSessionId();
 
@@ -16,7 +16,7 @@ export default function App() {
     if (embedSettings.openOnLoad === "on") {
       toggleOpenChat(true);
     }
-    setPageSourceCode(document.documentElement.outerHTML)
+    // setPageSourceCode(document.documentElement.outerHTML)
   }, [embedSettings.loaded]);
 
   if (!embedSettings.loaded) return null;
@@ -52,7 +52,7 @@ export default function App() {
               closeChat={() => toggleOpenChat(false)}
               settings={embedSettings}
               sessionId={sessionId}
-              pageSourceCode = {pageSourceCode}
+              // pageSourceCode = {pageSourceCode}
             />
           )}
         </div>

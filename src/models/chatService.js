@@ -31,7 +31,7 @@ const ChatService = {
       .then((res) => res.ok)
       .catch(() => false);
   },
-  streamChat: async function (sessionId, embedSettings,currentURL,pageSourceCode, message, handleChat) {
+  streamChat: async function (sessionId, embedSettings, message, handleChat) {
     const { baseApiUrl, embedId, username } = embedSettings;
     const overrides = {
       prompt: embedSettings?.prompt ?? null,
@@ -45,8 +45,6 @@ const ChatService = {
       body: JSON.stringify({
         message,
         sessionId,
-        currentURL,
-        pageSourceCode,
         username,
         ...overrides,
       }),
