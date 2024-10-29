@@ -5,50 +5,17 @@ import handleChat from "@/utils/chat";
 import ChatService from "@/models/chatService";
 export const SEND_TEXT_EVENT = "anythingllm-embed-send-prompt";
 
-const cleanHtml = (html) => {
-  let tempDiv = document.createElement('div');
-  tempDiv.innerHTML = html;
-
-  // Remove all <style> tags
-  const styleTags = tempDiv.querySelectorAll('style');
-  styleTags.forEach(style => style.remove());
-
-  // Remove all inline styles
-  const elementsWithStyles = tempDiv.querySelectorAll('[style]');
-  elementsWithStyles.forEach(el => el.removeAttribute('style'));
-
-  // Remove specific <script> tags with the attribute `data-embed-id`
-  const scriptTagsWithEmbedId = tempDiv.querySelectorAll('script[data-embed-id]');
-  scriptTagsWithEmbedId.forEach(script => script.remove());
-
-  return tempDiv.innerHTML;
-};
-
-function extractText(html) {
-  const text = document.createElement('div');
-  text.innerHTML = html;
-
-  let result = '';
-  for (const node of text.childNodes) {
-    if (node.nodeType === Node.TEXT_NODE) {
-      result += node.textContent.trim() + ' ';
-    }
-  }
-
-  return result.trim();
-}
 
 export default function ChatContainer({
   sessionId,
   settings,
   pageSourceCode,
+  toggle,
   knownHistory = [],
 }) {
-  // const textHtml = extractText(pageSourceCode);
-  // console.log('textHtml: ', textHtml);
   const [message, setMessage] = useState("");
-  const [currentURL, setCurrentURL] = useState("");
-  // const [pageCodeBlobUrl, setPageCodeBlobUrl] = useState("");
+  const [currentURL, setCurrentURL] = useState();
+  const [currentPageSourceCode, setCurrentPageSourceCode] = useState();
   const [loadingResponse, setLoadingResponse] = useState(false);
   const [chatHistory, setChatHistory] = useState(knownHistory);
   
@@ -130,42 +97,47 @@ export default function ChatContainer({
         chatHistory.length > 0 ? chatHistory[chatHistory.length - 1] : null;
       const remHistory = chatHistory.length > 0 ? chatHistory.slice(0, -1) : [];
       var _chatHistory = [...remHistory];
-
+  
       if (!promptMessage || !promptMessage?.userMessage) {
         setLoadingResponse(false);
         return false;
       }
-      const cleanedHTML = cleanHtml(pageSourceCode);
-      console.log('cleanedHTML: ', cleanedHTML);
-
-      const sourceCodeBlob = new Blob([cleanedHTML], { type: 'text/plain' });
-      console.log('sourceCodeBlob: ', sourceCodeBlob);
-      const sourceCodeBlobUrl = URL.createObjectURL(sourceCodeBlob);
-      console.log('sourceCodeBlobUrl: ', sourceCodeBlobUrl);
-      setPageCodeBlobUrl(sourceCodeBlobUrl)
-    
-        await ChatService.streamChat(
-          sessionId,
-          settings,
-          currentURL,
-          pageSourceCode,
-          promptMessage.userMessage,
-          (chatResult) =>
-            handleChat(
-              chatResult,
-              setLoadingResponse,
-              setChatHistory,
-              remHistory,
-              _chatHistory
-            )
-        );
-      ;
-         
+  
+      // Set currentURL and currentPageSourceCode to empty if toggle is false
+      if (!toggle) {
+        setCurrentURL("");
+        setCurrentPageSourceCode("");
+      }
+      if(toggle){
+        setCurrentURL(window.location.href);
+        setCurrentPageSourceCode(pageSourceCode);
+      }
+  
+      // Call streamChat after potentially modifying currentURL and currentPageSourceCode
+      await ChatService.streamChat(
+        sessionId,
+        settings,
+        currentURL,
+        currentPageSourceCode,
+        promptMessage.userMessage,
+        (chatResult) =>
+          handleChat(
+            chatResult,
+            setLoadingResponse,
+            setChatHistory,
+            remHistory,
+            _chatHistory
+          )
+      );
+  
       return;
     }
-
-    loadingResponse === true && fetchReply();
-  }, [loadingResponse, chatHistory]);
+  
+    if (loadingResponse === true) {
+      fetchReply();
+    }
+  }, [loadingResponse, chatHistory, currentURL, currentPageSourceCode]);
+  
 
   const handleAutofillEvent = (event) => {
     if (!event.detail.command) return;
@@ -173,13 +145,9 @@ export default function ChatContainer({
   };
 
   useEffect(() => {
-    console.log("currentURL: ",currentURL);
   
     window.addEventListener(SEND_TEXT_EVENT, handleAutofillEvent);
-    setCurrentURL(window.location.href)
-    // setPageSourceCode(document.documentElement.outerHTML,() => {
-      // console.log("pageSourceCode: ",pageSourceCode)
-    // })
+   
     return () => {
       window.removeEventListener(SEND_TEXT_EVENT, handleAutofillEvent);
     };
@@ -189,6 +157,7 @@ export default function ChatContainer({
     <div className="allm-h-full allm-w-full allm-flex allm-flex-col">
       <div className="allm-flex-grow allm-overflow-y-auto">
         <ChatHistory settings={settings} history={chatHistory} />
+        
       </div>
       <PromptInput
         message={message}
