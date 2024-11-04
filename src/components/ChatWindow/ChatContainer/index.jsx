@@ -11,6 +11,7 @@ export default function ChatContainer({
   settings,
   pageSourceCode,
   toggle,
+  embedDetails,
   knownHistory = [],
 }) {
   const [message, setMessage] = useState("");
@@ -18,7 +19,8 @@ export default function ChatContainer({
   const [currentPageSourceCode, setCurrentPageSourceCode] = useState();
   const [loadingResponse, setLoadingResponse] = useState(false);
   const [chatHistory, setChatHistory] = useState(knownHistory);
-  
+
+
 
   // Resync history if the ref to known history changes
   // eg: cleared.
@@ -97,23 +99,23 @@ export default function ChatContainer({
         chatHistory.length > 0 ? chatHistory[chatHistory.length - 1] : null;
       const remHistory = chatHistory.length > 0 ? chatHistory.slice(0, -1) : [];
       var _chatHistory = [...remHistory];
-  
+
       if (!promptMessage || !promptMessage?.userMessage) {
         setLoadingResponse(false);
         return false;
       }
-  
+
       // Set currentURL and currentPageSourceCode to empty if toggle is false
-      if (!toggle) {
+      const embedUrl = embedDetails.embed.allow_sending_url;
+      if (embedUrl) {
+        setCurrentURL(window.location.href);
+        setCurrentPageSourceCode(pageSourceCode);
+      } else {
         setCurrentURL("");
         setCurrentPageSourceCode("");
       }
-      if(toggle){
-        setCurrentURL(window.location.href);
-        setCurrentPageSourceCode(pageSourceCode);
-      }
-  
-      // Call streamChat after potentially modifying currentURL and currentPageSourceCode
+
+      // Call streamChat after potentially modi fying currentURL and currentPageSourceCode
       await ChatService.streamChat(
         sessionId,
         settings,
@@ -129,25 +131,25 @@ export default function ChatContainer({
             _chatHistory
           )
       );
-  
+
       return;
     }
-  
+
     if (loadingResponse === true) {
       fetchReply();
     }
   }, [loadingResponse, chatHistory, currentURL, currentPageSourceCode]);
-  
+
 
   const handleAutofillEvent = (event) => {
     if (!event.detail.command) return;
     sendCommand(event.detail.command, [], []);
   };
 
+
   useEffect(() => {
-  
     window.addEventListener(SEND_TEXT_EVENT, handleAutofillEvent);
-   
+
     return () => {
       window.removeEventListener(SEND_TEXT_EVENT, handleAutofillEvent);
     };
@@ -157,7 +159,7 @@ export default function ChatContainer({
     <div className="allm-h-full allm-w-full allm-flex allm-flex-col">
       <div className="allm-flex-grow allm-overflow-y-auto">
         <ChatHistory settings={settings} history={chatHistory} />
-        
+
       </div>
       <PromptInput
         message={message}

@@ -7,7 +7,7 @@ import { ChatHistoryLoading } from "./ChatContainer/ChatHistory";
 import ResetChat from "../ResetChat";
 import { useState } from "react";
 
-export default function ChatWindow({ closeChat, settings, sessionId, pageSourceCode }) {
+export default function ChatWindow({ closeChat, settings, sessionId, pageSourceCode,embedDetails }) {
   const { chatHistory, setChatHistory, loading } = useChatHistory(
     settings,
     sessionId
@@ -15,9 +15,9 @@ export default function ChatWindow({ closeChat, settings, sessionId, pageSourceC
   const [isToggled, setIsToggled] = useState(false);
 
   // Function to handle toggle
-  const handleToggle = () => {
-    setIsToggled(prevState => !prevState);
-  };
+  // const handleToggle = () => {
+  //   setIsToggled(prevState => !prevState);
+  // };
 
   if (loading) {
     return (
@@ -56,11 +56,12 @@ export default function ChatWindow({ closeChat, settings, sessionId, pageSourceC
           knownHistory={chatHistory}
           pageSourceCode={pageSourceCode}
           toggle={isToggled}
+          embedDetails = {embedDetails}
         />
       </div>
       <div>
 
-      <div className="toggle-container">
+      {/* <div className="toggle-container">
       <label className="toggle-label">
         <input
           type="checkbox"
@@ -71,7 +72,7 @@ export default function ChatWindow({ closeChat, settings, sessionId, pageSourceC
         <div className={`toggle-slider ${isToggled ? 'active' : ''}`}></div>
         <span className="toggle-text">{isToggled ? 'Current url sent !' : 'Want to send url ?'}</span>
       </label>
-    </div>
+    </div> */}
 
         <Sponsor settings={settings} />
         <ResetChat

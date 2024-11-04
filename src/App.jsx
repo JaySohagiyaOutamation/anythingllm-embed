@@ -5,19 +5,33 @@ import Head from "@/components/Head";
 import OpenButton from "@/components/OpenButton";
 import ChatWindow from "./components/ChatWindow";
 import { useEffect, useState } from "react";
+import ChatService from "./models/chatService";
 
 export default function App() {
   const { isChatOpen, toggleOpenChat } = useOpenChat();
   const [pageSourceCode, setPageSourceCode] = useState("");
   const embedSettings = useGetScriptAttributes();
+  const [embedDetails,setEmbedDetails] = useState();
   const sessionId = useSessionId();
-
-  useEffect(() => {
-    if (embedSettings.openOnLoad === "on") {
-      toggleOpenChat(true);
+  const fetchEmbedId = async () => {
+    try {
+      const details = await ChatService.embedDetails(embedSettings);
+      setEmbedDetails(details);
+    } catch (error) {
+      console.error('Error fetching embed details:', error);
     }
-    setPageSourceCode(document.documentElement.outerHTML)
+  };
+  
+  useEffect(() => {
+    if (embedSettings.loaded) {
+      if (embedSettings.openOnLoad === "on") {
+        toggleOpenChat(true);
+      }
+      fetchEmbedId();
+      setPageSourceCode(document.documentElement.outerHTML);
+    }
   }, [embedSettings.loaded]);
+  
 
   if (!embedSettings.loaded) return null;
 
@@ -47,12 +61,15 @@ export default function App() {
           className={`allm-h-full allm-w-full allm-bg-[#f8fafe] allm-fixed allm-bottom-0 allm-right-0 allm-mb-4 allm-md:mr-4 allm-rounded-2xl allm-border allm-border-gray-300 allm-shadow-[0_4px_14px_rgba(0,0,0,0.25)] ${positionClasses[position]}`}
           id="anything-llm-chat"
         >
+      
           {isChatOpen && (
+           
             <ChatWindow
               closeChat={() => toggleOpenChat(false)}
               settings={embedSettings}
               sessionId={sessionId}
               pageSourceCode = {pageSourceCode}
+              embedDetails = {embedDetails}
             />
           )}
         </div>

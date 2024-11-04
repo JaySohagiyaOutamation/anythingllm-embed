@@ -106,6 +106,24 @@ const ChatService = {
       },
     });
   },
+
+  embedDetails: async function (embedSettings) {
+    const { embedId, baseApiUrl } = embedSettings;
+    return await fetch(`${baseApiUrl}/${embedId}`) // Adjust the endpoint as needed
+      .then((res) => {
+        if (res.ok) return res.json();
+        throw new Error("Invalid response from server");
+      })
+      .then((res) => {
+        // Assuming the response contains the embed details directly
+        return res;
+      })
+      .catch((e) => {
+        console.error(e);
+        return null; // Return null or an appropriate default value
+      });
+  },
+
 };
 
 export default ChatService;
