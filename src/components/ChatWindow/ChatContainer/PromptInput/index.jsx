@@ -46,57 +46,57 @@ export default function PromptInput({
   };
 
   return (
-    <div className="allm-w-full allm-sticky allm-bottom-0 allm-z-10 allm-flex allm-justify-center allm-items-center allm-bg-[#f8fafe]">
-      <form
-        onSubmit={handleSubmit}
-        className="allm-flex allm-flex-col allm-gap-y-1 allm-rounded-t-lg allm-w-full allm-items-center allm-justify-center"
+    <div className="allm-flex allm-justify-center allm-items-center">
+    <div className="allm-w-[50%] allm-sticky allm-bottom-0 allm-z-10 allm-flex allm-justify-center allm-items-center bg-blue-100">
+    <form
+      onSubmit={handleSubmit}
+      className="allm-flex allm-flex-col allm-gap-y-1 allm-rounded-lg allm-w-full  allm-bg-[#dbeafe] allm-items-center allm-justify-center"
       >
-        <div className="allm-flex allm-items-center allm-w-full">
-          <div className="allm-bg-[#f8fafe] allm-flex allm-flex-col allm-px-4 allm-overflow-hidden allm-w-full">
-            <div
-              style={{ border: "1.5px solid #22262833" }}
-              className="allm-flex allm-items-center allm-w-full allm-rounded-2xl allm-bg-white"
+      <div className="allm-flex allm-items-center allm-w-full allm-bg-[#dbeafe] allm-rounded-2xl">
+        <div
+          className="allm-w-full allm-flex allm-items-center allm-rounded-2xl allm-bg-[#dbeafe]"
+          >
+          <textarea
+            ref={textareaRef}
+            onKeyUp={adjustTextArea}
+            onKeyDown={captureEnter}
+            onChange={onChange}
+            required={true}
+            disabled={inputDisabled}
+            onFocus={() => setFocused(true)}
+            onBlur={(e) => {
+              setFocused(false);
+              adjustTextArea(e);
+            }}
+            value={message}
+            className="allm-font-sans allm-border-none allm-cursor-text allm-max-h-[200px] allm-min-h-[70px] allm-text-[14px] allm-mx-2 allm-bg-[#dbeafe] allm-py-2 allm-w-full allm-text-black placeholder:allm-text-slate-800/60 allm-resize-none active:allm-outline-none focus:allm-outline-none"
+            placeholder="Send a message"
+            id="message-input"
+            />
+          <button
+            ref={formRef}
+            type="submit"
+            disabled={buttonDisabled}
+            className="allm-bg-transparent allm-border-none allm-inline-flex allm-justify-center allm-rounded-2xl allm-cursor-pointer allm-text-black group"
+            id="send-message-button"
+            aria-label="Send message"
             >
-              <textarea
-                ref={textareaRef}
-                onKeyUp={adjustTextArea}
-                onKeyDown={captureEnter}
-                onChange={onChange}
-                required={true}
-                disabled={inputDisabled}
-                onFocus={() => setFocused(true)}
-                onBlur={(e) => {
-                  setFocused(false);
-                  adjustTextArea(e);
-                }}
-                value={message}
-                className="allm-font-sans allm-border-none allm-cursor-text allm-max-h-[100px] allm-text-[14px] allm-mx-2 allm-py-2 allm-w-full allm-text-black allm-bg-transparent placeholder:allm-text-slate-800/60 allm-resize-none active:allm-outline-none focus:allm-outline-none allm-flex-grow"
-                placeholder={"Send a message"}
-                id="message-input"
+            {buttonDisabled ? (
+              <CircleNotch className="allm-w-4 allm-h-4 allm-animate-spin" />
+            ) : (
+              <PaperPlaneRight
+              size={24}
+              className="allm-my-3 allm-text-[#22262899]/80 group-hover:allm-text-[#22262899]/90"
+              weight="fill"
               />
-              <button
-                ref={formRef}
-                type="submit"
-                disabled={buttonDisabled}
-                className="allm-bg-transparent allm-border-none allm-inline-flex allm-justify-center allm-rounded-2xl allm-cursor-pointer allm-text-black group"
-                id="send-message-button"
-                aria-label="Send message"
-              >
-                {buttonDisabled ? (
-                  <CircleNotch className="allm-w-4 allm-h-4 allm-animate-spin" />
-                ) : (
-                  <PaperPlaneRight
-                    size={24}
-                    className="allm-my-3 allm-text-[#22262899]/60 group-hover:allm-text-[#22262899]/90"
-                    weight="fill"
-                  />
-                )}
-                <span className="allm-sr-only">Send message</span>
-              </button>
-            </div>
-          </div>
+            )}
+            <span className="allm-sr-only">Send message</span>
+          </button>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
+  </div>
+  </div>
+  
   );
 }

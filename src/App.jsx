@@ -43,7 +43,7 @@ export default function App() {
   };
 
   const position = embedSettings.position || "bottom-right";
-  const windowWidth = embedSettings.windowWidth ?? "400px";
+  const windowWidth = embedSettings.windowWidth ?? "1512px";
   const windowHeight = embedSettings.windowHeight ?? "700px";
 
   return (
