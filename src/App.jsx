@@ -58,7 +58,7 @@ export default function App() {
             maxWidth: windowWidth,
             maxHeight: windowHeight,
           }}
-          className={`allm-h-full allm-w-full allm-bg-[#f8fafe] allm-fixed allm-bottom-0 allm-right-0 allm-mb-4 allm-md:mr-4 allm-rounded-2xl allm-border allm-border-gray-300 allm-shadow-[0_4px_14px_rgba(0,0,0,0.25)] ${positionClasses[position]}`}
+          className={`allm-h-full allm-w-full allm-bg-[#f8fafe] allm-fixed allm-bottom-0 allm-right-0 allm-mb-4 allm-md:mr-4 allm-rounded-2xl allm-border allm-border-gray-300 allm-shadow-[0_4px_14px_rgba(0,0,0,0.25)] allm-whitespace-normal  ${positionClasses[position]}`}
           id="anything-llm-chat"
         >
       

@@ -25,5 +25,6 @@ export const embedderSettings = {
   },
   ASSISTANT_STYLES: {
     base: `allm-text-black allm-mr-[37px] allm-ml-[9px]`,
+    msgBg: "#ffffff",
   },
 };

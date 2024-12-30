@@ -28,13 +28,17 @@ const HistoricalMessage = forwardRef(
     if (error) console.error(`OUTAMATION_AI_CHAT_WIDGET_ERROR: ${error}`);
 
     return (
-      <div className="py-[12px]">
+      <div className="py-[12px] allm-w-[85%]">
         <div
           key={uuid}
           ref={ref}
           className={`allm-flex allm-items-start allm-w-full allm-font-sans allm-font-light allm-h-fit allm-px-28 allm-py-8 ${
-            role === "user" ? "allm-bg-[#e4ecf6]": "allm-bg-[#f8fafe]"
+            role === "user" ? "allm-bg-[#e4ecf6]" : "allm-bg-[#f8fafe]"
           }`}
+          style={{
+            maxWidth: "100%",
+            overflowX: "hidden",
+          }}
         >
           {role === "assistant" ? (
             <img
@@ -43,22 +47,26 @@ const HistoricalMessage = forwardRef(
               className="allm-w-9 allm-h-9 allm-flex-shrink-0 allm-mt-2 allm-mr-4"
               id="anything-llm-icon"
             />
-          ) : <img
-          src={UserProfileIcon}
-          alt="User Profile Icon"
-          className="allm-w-9 allm-h-9 allm-flex-shrink-0 allm-mt-2 allm-mr-4"
-          id="anything-llm-icon"
-        />}
+          ) : (
+            <img
+              src={UserProfileIcon}
+              alt="User Profile Icon"
+              className="allm-w-9 allm-h-9 allm-flex-shrink-0 allm-mt-2 allm-mr-4"
+              id="anything-llm-icon"
+            />
+          )}
           <div
             style={{
               wordBreak: "break-word",
+              maxWidth: "100%",
+              overflowX: "hidden",
             }}
             className={`allm-py-[11px] allm-flex allm-flex-col allm-font-sans ${
               error
                 ? "allm-bg-red-200 allm-rounded-lg"
                 : role === "user"
-                  ? `${embedderSettings.USER_STYLES.base} allm-anything-llm-user-message`
-                  : `${embedderSettings.ASSISTANT_STYLES.base} allm-anything-llm-assistant-message`
+                ? `${embedderSettings.USER_STYLES.base} allm-anything-llm-user-message`
+                : `${embedderSettings.ASSISTANT_STYLES.base} allm-anything-llm-assistant-message`
             }`}
           >
             <div className="allm-flex">
@@ -74,7 +82,7 @@ const HistoricalMessage = forwardRef(
                 </div>
               ) : (
                 <span
-                  className={`allm-whitespace-pre-line allm-flex allm-flex-col allm-w-[85%] allm-gap-y-1 ${textSize} allm-leading-[20px]`}
+                  className={`allm-whitespace-pre-line allm-flex allm-flex-col allm-w-full allm-gap-y-1 ${textSize} allm-leading-[20px]`}
                   dangerouslySetInnerHTML={{
                     __html: DOMPurify.sanitize(renderMarkdown(message)),
                   }}
@@ -83,8 +91,6 @@ const HistoricalMessage = forwardRef(
             </div>
           </div>
         </div>
-
-       
       </div>
     );
   }
